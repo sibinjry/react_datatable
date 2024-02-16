@@ -8,27 +8,12 @@ import Button from 'react-bootstrap/Button';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { FilterMatchMode, FilterOperator} from 'primereact/api';
-// import { AiOutlineMenuFold } from "react-icons/ai";
-// import { FaBeer } from 'react-icons/fa';
-// import { Tag } from 'primereact/tag';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 
 
-// import { MultiSelect } from 'primereact/multiselect';
-// import { ProductService } from './service/ProductService';
-// import Table from 'react-bootstrap/Table';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function Assignment(){
-
-  // const [products, setProducts] = useState([]);
-
-  // useEffect(() => {
-  //     ProductService.getProductsMini().then(data => setProducts(data));
-  // }, []);
 
   const products = [{
     id: '1',
@@ -77,6 +62,19 @@ export default function Assignment(){
 const [selectedProducts, setSelectedProducts] = useState(null);
 const [rowClick, setRowClick] = useState(true);
 
+const [posts, setPosts] = useState([]);
+useEffect(() => {
+   fetch('https://dummyjson.com/products')
+      .then((response) => response.json())
+      .then((data) => {
+         console.log(data);
+         setPosts(data);
+      })
+      .catch((err) => {
+         console.log(err.message);
+      });
+}, []);
+
 const imageBodyTemplate = (product) => {
   return <img src={`https://cabinetm-beta.s3.amazonaws.com/00000177-9bee-2aa7-32bb-3a7b8f9f46bb.jpg`} height="90px" width="90px" className="w-6rem shadow-2 border-round" />;
 };
@@ -96,20 +94,6 @@ const dropdownTemplate = (product) => {
 </Dropdown>
   );
 };
-
-// const statusBodyTemplate = (product) => {
-//   return <Tag value={product.status} severity={getSeverity(product)}></Tag>;
-// };
-
-// const getSeverity = (product) => {
-//   switch (product.status) {
-//       case 'pending':
-//           return 'success';
-//       default:
-//           return null;
-//   }
-// };
-
 
 const statusBodyTemplate = (product) => {
   const severity = getSeverity(product);
@@ -142,24 +126,6 @@ const linkBodyTemplate = (product) => {
     </a>
   );
 }
-
-
-
-// const representativeRowFilterTemplate = (options) => {
-//   return (
-//       <MultiSelect
-//           value={options.value}
-//           options={representatives}
-//           itemTemplate={representativesItemTemplate}
-//           onChange={(e) => options.filterApplyCallback(e.value)}
-//           optionLabel="name"
-//           placeholder="Any"
-//           className="p-column-filter"
-//           maxSelectedLabels={1}
-//           style={{ minWidth: '14rem' }}
-//       />
-//   );
-// };
 
 
 
@@ -221,8 +187,6 @@ const linkBodyTemplate = (product) => {
                     <Button variant="outline-secondary" className="btn-sm" id='button'>Accept</Button>{' '}
                     <Button variant="outline-secondary" className="btn-sm" id='button'>Print</Button>{' '}
                     <Button variant="outline-secondary" className="btn-sm" id='refresh-button'>Refresh</Button>{' '}
-
-                         
                     </Col>
                 </Row>
                 <br></br>
